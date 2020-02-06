@@ -1,21 +1,21 @@
 {
-  "name": "nayak-express-skeleton",
+  "name": "mirai_BackendNode",
   "version": "1.0.0",
-  "description": "prod by nayak",
+  "description": "developed by Jin",
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LeeJeongYeop/nayak-express-skeleton.git"
+    "url": "git+https://github.com/Iwajaki/Mirai_BackendNode.git"
   },
   "author": "nayak",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/LeeJeongYeop/nayak-express-skeleton/issues"
+    "url": "https://github.com/Iwajaki/Mirai_BackendNode/issues"
   },
-  "homepage": "https://github.com/LeeJeongYeop/nayak-express-skeleton#readme",
+  "homepage": "https://",
   "dependencies": {
     "body-parser": "~1.19.0",
     "cookie-parser": "~1.4.4",
