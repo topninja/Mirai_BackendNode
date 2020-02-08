@@ -19,12 +19,12 @@ exports.auth = (token, done) => {
     } else {
       const sql =
         `
-        SELECT id, user_id
-        FROM user
-        WHERE user_id = ?
+        SELECT *
+        FROM tbl_user
+        WHERE ip = ? AND device_id = ? AND device_type = ?
         `;
 
-      pool.query(sql, [decoded.user_id], (err, rows) => {
+      pool.query(sql, [decoded.ip, decoded.device_id, decoded.device_type], (err, rows) => {
         if (err) {
           return done(err);
         } else {
