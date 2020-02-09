@@ -8,8 +8,8 @@
   "401": {
     "status": 401,
     "code": 0,
-    "message": "Login Fail",
-    "description": "Login Fail"
+    "message": "Login Failed",
+    "description": "Login Failed"
   },
 
 
