@@ -40,7 +40,6 @@ exports.crateUser = async (req, res, next) => {
     };
 
     userModel.createUser(user_data).then((user_info)=>{
-      console.log(user_info);
       result.mirai_token = jwt.sign(user_info, config.jwt.cert, {expiresIn: '10h'});
       return res.json(result);
     });

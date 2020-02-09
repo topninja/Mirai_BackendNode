@@ -59,37 +59,59 @@ exports.existingCustomer = (user_data) => {
  * Create User for first user
  * @param: user_data = { ip, device_id, device_type }
  */
-exports.createUser = (user_data) => {
+
+function getchat_id () {
   return new Promise((resolve, reject) => {
+    const sql =
+          `
+            SELECT auto_increment FROM INFORMATION_SCHEMA.TABLES
+            WHERE table_name = 'tbl_user'
+          `;
+    
+    pool.query(sql, async (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve (rows[0].auto_increment);
+      }
+    });
+  });
+}
+
+exports.createUser = async (user_data) => {
+    return new Promise((resolve, reject) => {
+      getchat_id().then(chat_id_random => {
+      console.log(chat_id_random);  
       const sql =
-        `
-        INSERT INTO tbl_user (ip, device_id, device_type, chat_id, step_id) VALUES (?, ?, ?, ?, 1)
-        `;
-      pool.query(sql, [user_data.ip, user_data.device_id, user_data.device_type, (new Date).getTime()], (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          if (rows.affectedRows === 1) {
-            let insertId = rows.insertId;
-            const sql =
-              `
-              SELECT * FROM tbl_user WHERE id = ?
-              `;
-            pool.query(sql, insertId, (err, rows) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve({
-                  device_id : rows[0].device_id,
-                  device_type : rows[0].device_type,
-                  ip : rows[0].ip,
-                  chat_id : rows[0].chat_id
-                });
-              }
-            });
+          `
+          INSERT INTO tbl_user (ip, device_id, device_type, chat_id, step_id) VALUES (?, ?, ?, ?, 1)
+          `;
+        pool.query(sql, [user_data.ip, user_data.device_id, user_data.device_type, chat_id_random], (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            if (rows.affectedRows === 1) {
+              let insertId = rows.insertId;
+              const sql =
+                `
+                SELECT * FROM tbl_user WHERE id = ?
+                `;
+              pool.query(sql, insertId, (err, rows) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve({
+                    device_id : rows[0].device_id,
+                    device_type : rows[0].device_type,
+                    ip : rows[0].ip,
+                    chat_id : rows[0].chat_id
+                  });
+                }
+              });
+            }
           }
-        }
-      });
+        });
+    });
   });
 }
 
