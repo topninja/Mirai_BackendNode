@@ -6,6 +6,9 @@ const articleModel = require('../models/ArticleModel');
 const shortid = require('shortid');
 const path = require('path');
 var multer  =   require('multer');  
+var fs = require('fs');
+var upload_file = require('../lib/fileUpload.js');
+var upload_image = require('../lib/imageUpload.js');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -88,6 +91,35 @@ exports.article = (req,res,next) => {
 exports.addArticle = (req,res,next) => {
     return res.render('article_add',{loggedin:'true'});
 }
+
+exports.fileUpload = (req,res) => {
+  var hostname = req.headers.origin;
+  upload_file(req, function(err, data) {
+
+    if (err) {
+      return res.status(404).end(JSON.stringify(err));
+    }
+    let url=hostname+"/uploads/froala/" +path.parse(data.link).name+path.parse(data.link).ext;
+    res.send({link:url});
+  });
+  
+}
+
+exports.imageUpload= (req,res,next)=> {
+  
+  var hostname = req.headers.origin;
+  
+  upload_image(req, function(err, data) {
+
+    if (err) {
+      return res.status(404).end(JSON.stringify(err));
+    }
+    let url=hostname+"/uploads/froala/" +path.parse(data.link).name+path.parse(data.link).ext;
+    console.log(url)
+    res.send({link:url});
+  });
+}
+
 
 exports.saveArticle = (req,res,next) => {
       upload(req,res,function(err) {  

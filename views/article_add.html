@@ -80,7 +80,15 @@
         <%- include('_footer'); -%>
         <script>
             let editor = new FroalaEditor("#edit", {
-                    theme: 'dark'
+                    theme: 'dark',
+                    imageUploadURL: '/admin/imageUpload',
+                    imageUploadParams: {
+                        id: 'my_editor'
+                    },
+                    fileUploadURL: './admin/fileUpload',
+                    fileUploadParams: {
+                        id: 'my_editor'
+                    },
                 })
             
             $('#article_form').submit((e)=>{

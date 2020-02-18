@@ -64,7 +64,7 @@
                                                  %>                                                
                                             </td>
                                             <td>
-                                                <img src="http://localhost:3000/<%= articles[i].thumbnail_url %>" width="80px"  >
+                                                <img src="<%=baseURL%>/<%= articles[i].thumbnail_url %>" width="80px"  >
                                             </td>
                                             <td>
                                                 <a href="/admin/article/edit/<%= articles[i].id %>"> <button type="button" class="btn btn-primary"> Edit </button> </a>		

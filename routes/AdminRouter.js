@@ -35,5 +35,11 @@ module.exports = (router) => {
   //delete article
   router.route('/article/delete/:id').get(AdminCtrl.auth, AdminCtrl.deleteArticle );
 
+  //wsyiwyg editor file upoad save and return url
+  router.route('/fileUpload').post(AdminCtrl.fileUpload);
+
+  //wsyiwyg editor image upoad save and return url
+  router.route('/imageUpload').post(AdminCtrl.imageUpload);
+  
   return router;
 };

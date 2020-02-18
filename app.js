@@ -29,6 +29,10 @@ app.set('view engine', 'html');
 // CORS ALL ACCESS Settings
 app.use(cors());
 app.use(session({secret:'secret',loggedIn:'false'}));
+
+app.locals.baseURL = "http://127.0.0.1:3000"
+
+
 // create DB pool
 require('./config/config').createDBPool(100);
 

@@ -33,6 +33,7 @@
     "mysql": "^2.18.1",
     "node-cron": "^2.0.3",
     "path": "^0.12.7",
+    "sha1": "^1.1.1",
     "shortid": "^2.2.15",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2"
