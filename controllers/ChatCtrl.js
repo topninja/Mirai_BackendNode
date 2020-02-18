@@ -9,7 +9,7 @@ const chatStepCount = 15;
 //"ネイリスト", "アイリスト",  "エステティシャン",  "ヘアスタイリスト"  //  expert that woks in salon
 const jobArray = ['美容が好きなだけ', 'ネイリスト', 'アイリスト', 'エステティシャン', 'ヘアスタイリスト'];
 const topicArray = ['コスメ・最新美容情報', 'ネイル・アイラッシュ', '恋愛', 'スピリチュアル'];
-
+//chat_log table :  chat_in_out  1: in backend(is_backend : 0),     0; out  to frontend (is_backend:1)
 //step_id = 1
 exports.startchat1 = async (req, res, next) => {
   let result = {}
@@ -21,7 +21,8 @@ exports.startchat1 = async (req, res, next) => {
     result = {
       chat_id : insertId,
       text : step.step_text,
-      input_type : step.step_input_type
+      input_type : step.step_input_type,
+      is_backend : 1
     }
   }
   catch(err){
@@ -41,7 +42,8 @@ exports.startchat2 = async (req, res, next) => {
     result = {
       chat_id : insertId,
       text : step.step_text,
-      input_type : step.step_input_type
+      input_type : step.step_input_type,
+      is_backend : 1
     }
   }
   catch(err){
@@ -62,11 +64,49 @@ exports.startchat3 = async (req, res, next) => {
       chat_id : insertId,
       text : step.step_text,
       input_type : step.step_input_type,
-      place_holder : step.step_placeholder
+      place_holder : step.step_placeholder,
+      is_backend : 1
     }
   }
   catch(err){
     return next(err)
+  }
+  return res.json(result);
+}
+
+exports.chatlog = async (req, res, next) => {
+  let result = [];
+  let log = await chatlogModel.GetLog(req.user.chat_id);
+  for (var i in log){
+    //chat_in_out == 0 then send chat to frontend from backend  if send message by step_id
+    if (log[i].chat_in_out == 0){
+      let step = await chatModel.getStep(log[i].chat_step_id);
+      var onelog = {
+        chat_id : log[i].id,
+        is_backend : 1,
+        chat_step_id : log[i].chat_step_id,
+        step_content : {
+          step_text : step.step_text,
+          step_input_type : step.step_input_type,
+          step_message_type: step.step_message_type,
+          step_placeholder: step.step_placeholder,
+          step_option_list: step.step_option_list,
+          step_gallery_list: step.step_gallery_list,
+          step_article_list: step.step_article_list
+        }
+      }
+      result.push(onelog);
+    }
+    else {
+      var onelog = {
+        chat_id : log[i].id,
+        answer : log[i].answer,
+        answer_id : log[i].answer_id,
+        is_backend : 0,
+        chat_step_id : log[i].chat_step_id
+      }
+      result.push(onelog);
+    }
   }
   return res.json(result);
 }
@@ -200,8 +240,9 @@ exports.chat = async (req, res, next) => {
       
       // add user's chat log
       // horoscope process handler as birthday  step : 6
-      let insertId = await chatlogModel.AddLog(req.user.chat_id, null, null, 0, step_id);
+      let insertId = await chatlogModel.AddLog(req.user.chat_id, null, null, 0, step_id - 1);
       result.chat_id = insertId;
+      result.is_backend = 1;
       if (step.step_text) result.text = step.step_text;
       if (step.step_input_type) result.input_type = step.step_input_type;
       if (step.step_message_type) result.message_type = step.step_message_type;

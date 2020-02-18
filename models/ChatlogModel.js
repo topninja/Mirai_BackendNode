@@ -21,3 +21,20 @@ exports.AddLog  = (chat_id, answer, answer_id, chat_in_out, chat_step_id) => {
       }
     );
 }
+
+exports.GetLog  = (chat_id) => {
+  return new Promise((resolve, reject) => {
+      const sql =
+        `
+        SELECT * FROM tbl_chatlog WHERE chat_id = ?
+        `;
+      pool.query(sql, chat_id, (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    }
+  );
+}

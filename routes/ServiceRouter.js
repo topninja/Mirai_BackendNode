@@ -31,6 +31,9 @@ module.exports = (router) => {
   // normal chat flow
   router.route('/chat')
    .post(AuthCtrl.auth, validate(ParamValidation.startchat), ChatCtrl.chat);
+  
+  router.route('/chatlog')
+    .get(AuthCtrl.auth, validate(ParamValidation.startchat), ChatCtrl.chatlog)
 
   // router.route('/user/sign-up')
   //   .post(validate(ParamValidation.user_sign_up), UserCtrl.signUp);
