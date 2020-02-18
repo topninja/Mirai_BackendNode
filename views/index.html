@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<%- include('_head'); -%>
+	</head>
+	<body>
+		<%- include('_nav'); -%>
+		<div class="page-content">
+			<div class="row">
+				<div class="col-md-2">
+					<%- include('_menu'); -%>
+					
+				</div>
+				<div class="col-md-10">
+					<div class="content-box-large">
+						<div class="panel-heading">
+							<div class="panel-title">User Management table</div>
+													
+						</div>
+						<div class="panel-body " style="overflow-x:auto;">
+							<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+								<thead>
+									<tr>
+										<th>id</th>
+										<th>First name</th>
+										<th>Last name</th>
+										<th>Full name</th>
+										<th>Nick name</th>
+										<th>Email</th>
+										<th>birthday</th>
+										<th>telephone</th>
+										<th>zip code</th>
+										<th>prefecture</th>
+										<th>city</th>
+										<th>address</th>
+										<th>job</th>
+										<th>favorite topic</th>
+										<th>device id</th>
+										<th>device type</th>
+										<th>ip</th>
+										<th>daily horoscope</th>
+										<th>last visited</th>
+										<th>chat id</th>
+										<th>step id</th>
+									</tr>
+								</thead>
+								<tbody>
+									<% for(var i=0; i < users.length; i++) { %>
+									<tr>
+										<td>
+											<%= users[i].id %>
+										</td>
+										<td>
+											<%= users[i].first_name %>
+										</td>
+										<td>
+											<%= users[i].last_name %>
+										</td>
+										<td>
+											<%= users[i].full_name %>
+										</td>
+
+										<td>
+											<%= users[i].nick_name %>
+										</td>
+										<td>
+											<%= users[i].email %>
+										</td>
+										<td>
+											<%= users[i].birth %>
+										</td>
+										<td>
+											<%= users[i].tel %>
+										</td>
+										<td>
+											<%= users[i].zip_code %>
+										</td>
+
+										<td>
+											<%= users[i].prefecture %>
+										</td>
+										<td>
+											<%= users[i].city %>
+										</td>
+										<td>
+											<%= users[i].address %>
+										</td>
+
+										<td>
+											<%= users[i].job %>
+										</td>
+										<td>
+											<%= users[i].favorite_topic %>
+										</td>
+										<td>
+											<%= users[i].device_id %>
+										</td>
+
+										<td>
+											<%= users[i].device_type %>
+										</td>
+										<td>
+											<%= users[i].ip %>
+										</td>
+										<td>
+											<%= users[i].daily_horoscope %>
+										</td>
+										<td>
+											<%= users[i].last_visited %>
+										</td>
+
+										<td>
+											<%= users[i].chat_id %>
+										</td>
+										<td>
+											<%= users[i].step_id %>
+										</td>
+
+									</tr>
+									<% } %>
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<%- include('_footer'); -%>
+		
+	</body>
+</html>

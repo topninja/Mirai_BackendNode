@@ -55,6 +55,29 @@ exports.existingCustomer = (user_data) => {
   );
 };
 
+
+/**
+ * Fetch All Users for Admin
+ 
+ */
+
+exports.AllUsers = () => {
+  return new Promise((resolve, reject) => {
+    const sql =
+          `
+            SELECT * FROM tbl_user
+          `;
+    
+    pool.query(sql, async (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve (rows);
+      }
+    });
+  });
+}
+
 /**
  * Create User for first user
  * @param: user_data = { ip, device_id, device_type }

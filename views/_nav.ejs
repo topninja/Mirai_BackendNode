@@ -1,0 +1,29 @@
+<!-- nav -->
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top" style=" border-radius: 0px; ">
+
+	<a class="navbar-brand" href="/admin">
+		<b>Mirai Administrator</b>
+	</a>
+
+	<div id="navbar" class="navbar-collapse collapse">
+		<% if(loggedin=='true') { %>
+		<ul class="nav navbar-nav pull-right">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+						LoggedIn
+						<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+
+					<li>
+						<a href="/admin/logout">Logout</a>
+					</li>
+				
+				</ul>
+			</li>
+		</ul>
+		<% } %>
+	</div>
+	<!--/.nav-collapse -->
+	
+</nav>

@@ -8,7 +8,6 @@ const UserCtrl = controller.UserCtrl;
 const AuthCtrl = controller.AuthCtrl;
 const ChatCtrl = controller.ChatCtrl;
 
-
 module.exports = (router) => {
   // User check if user logined before or not
   router.route('/existingcustomer')

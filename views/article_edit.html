@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('_head'); -%>
+        <style>
+            body {
+                text-align: center;
+            }
+
+            section {
+                width: 81%;
+                margin: auto;
+                text-align: left;
+            }
+            .input-form {
+                width: 100%;
+                text-align: left;
+                margin-top: 10px;
+                margin-bottom: 25px;
+            }
+            .main-board {
+                width: 80%;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <title>
+    </title>
+    <body>
+        <%- include('_nav'); -%>
+        <div class="page-content">
+			<div class="row">
+				<div class="col-md-2">
+					<%- include('_menu'); -%>
+				</div>
+				<div class="col-md-10">
+                    <div class="content-box-large">
+                        <div class="panel-heading">
+                            <div class="panel-title">Add New Article</div>
+                        </div>
+                        <div class="panel-body " style="overflow-x:auto;">
+                            <div class="main-board col-md-10 col-md-offset-1">
+                                <form method="post" action="/admin/article/update" id="article_form" enctype="multipart/form-data">
+                                    <div class="input-form">
+                                        <h5>Name</h5>
+                                        <input type="text" class="form-control" name="name" id="name" value="<%= article_data.name %>" required>
+                                    </div>
+                                    <div class="input-form" >
+                                        <h5>Summary</h5>
+                                        <textarea  class="form-control" name="summary" id="summary" required> <%= article_data.summary %> </textarea>
+                                    </div>
+                                    <div class="input-form">
+                                        <h5>Thumbnail</h5>
+                                        <input type="file" class="form-control" name="thumbnail" id="thumbnail"     >
+                                    </div>
+                                    <div class="input-form">
+                                        <h5>Type</h5>
+                                        <select id="type" name="type" class="form-control" value="<%= article_data.article_type %>">
+                                            <option value="0" <% if (article_data.article_type=='0') { %> selected <% } %>>コスメ・最新美容情報</option>
+                                            <option value="1" <% if (article_data.article_type=='1') { %> selected <% } %>>ネイル・アイラッシュ</option>
+                                            <option value="2" <% if (article_data.article_type=='2') { %> selected <% } %>>恋愛</option>
+                                            <option value="3" <% if (article_data.article_type=='3') { %> selected <% } %>>スピリチュアル</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="edit" class="input-form">
+                                    </div>
+                                    <input type="hidden" name="content" id="content" value="<%= article_data.content %>">
+                                    <input type="hidden" name="id" id="id" value="<%= article_data.id %>">
+                                    <button type="submit" class="btn btn-primary pull-right"  > Update </button>
+                                </form>
+                       
+                            </div>
+                        
+                        </div>               
+			    	</div>
+                </div>
+            </div>
+		</div>
+
+        <%- include('_footer'); -%>
+        <script>
+            let editor = new FroalaEditor("#edit", {
+                    theme: 'dark'
+                },()=>{
+                    editor.html.set($('#content').val());
+                })
+            $('#article_form').submit((e)=>{
+               
+               let content = editor.html.get();
+               $('#content').val(content);
+              
+           })
+            function update() {
+                let content = editor.html.get();
+                $('#content').val(content);
+                $('#article_form').submit();
+            }
+            $(document).ready(function(){
+            
+            });
+        </script>
+    </body>
+</html>

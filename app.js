@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const horoscope = require('./lib/horoscopeScrapping');
 const cron = require('node-cron');
+var session = require('express-session');
 
 const app = express();
 
@@ -19,9 +20,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// set the view engine to ejs
+app.engine('.html', require('ejs').__express);
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+
 // CORS ALL ACCESS Settings
 app.use(cors());
-
+app.use(session({secret:'secret',loggedIn:'false'}));
 // create DB pool
 require('./config/config').createDBPool(100);
 
@@ -39,7 +46,6 @@ cron.schedule("* 5 * * *", () => {
 cron.schedule("* 8 * * *", () => {
   horoscope.doScrape();
 })
-
 // Server Port Set
 const PORT = 3000;
 app.listen(PORT, () => {

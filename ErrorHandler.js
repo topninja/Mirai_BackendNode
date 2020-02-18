@@ -12,6 +12,8 @@ module.exports = (app) => {
 
   app.use((err, req, res, next) => {
     // Custom error logging title.
+    // console.log("err",err);
+    // console.log("req",req);
     const log_title = `\n\x1b[31m[ERROR Handler]\u001b[0m\n\x1b[34m[Request PATH - ${req.path}]\u001b[0m\n`;
 
     // Custom error division.
