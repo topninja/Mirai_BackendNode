@@ -1,6 +1,6 @@
 Mirai Backend Restful API
 
-Node + Express + Mysql
+Node + Express + Mysql + ejs
 
 scrapping horoscope data from specific site
 
