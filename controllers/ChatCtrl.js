@@ -114,24 +114,24 @@ exports.chat = async(req, res, next) => {
         let step_id = req.user.step_id;
 
         switch (step_id) {
-            case 4:
+            case 3:
                 // name input
                 if (req.body.answer && req.body.input_type === "input") {
                     await userModel.addName(req.user.id, req.body.answer);
                 } else return next(9401);
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, null, 1, step_id);
                 break;
-            case 5:
+            case 4:
                 // answer_id : 0 Yes,  answer_id : 1 No
                 await chatlogModel.AddLog(req.user.chat_id, null, req.body.answer_id, 1, step_id);
 
-                if (req.body.answer_id && req.body.input_type === "input") {
+                if (req.body.answer_id && req.body.input_type === "option") {
                     if (parseInt(req.body.answer_id) === 1) {
                         step_id = parseInt(step_id) + 1;
                     }
                 } else return next(9401);
                 break;
-            case 6:
+            case 5:
                 // nick name insert
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -139,7 +139,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addNickName(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 7:
+            case 6:
                 // birthday insert
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -147,7 +147,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addBirthday(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 8:
+            case 7:
                 // horoscope send message answer_id = 0 : Yes, 1 : No
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -158,7 +158,7 @@ exports.chat = async(req, res, next) => {
                     }
                 } else return next(9401);
                 break;
-            case 9:
+            case 8:
                 // tel number insert
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -166,7 +166,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addTel(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 10:
+            case 9:
                 // email
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -174,7 +174,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addEmail(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 11:
+            case 10:
                 // postal code
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -182,7 +182,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addPostalCode(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 12:
+            case 11:
                 // salon work?  like beauty?
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -194,7 +194,7 @@ exports.chat = async(req, res, next) => {
                     }
                 } else return next(9401);
                 break;
-            case 13:
+            case 12:
                 // what's your genre of salon work, as an expert?
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -203,7 +203,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addJob(req.user.id, jobArray[job_id]);
                 } else return next(9401);
                 break;
-            case 14:
+            case 13:
                 // what's your favorite topic ?
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -212,7 +212,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addFavoriteTopic(req.user.id, topicArray[topic_id]);
                 } else return next(9401);
                 break;
-            case 15:
+            case 14:
                 result.article_list = [];
                 break;
         }
