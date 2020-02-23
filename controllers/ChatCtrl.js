@@ -3,6 +3,7 @@
 const chatModel = require('../models/ChatModel.js');
 const userModel = require('../models/UserModel');
 const chatlogModel = require('../models/ChatlogModel');
+const moment = require('moment')
 
 const chatStepCount = 15;
 //美容が好きなだけ : normal user that like beauty
@@ -144,7 +145,11 @@ exports.chat = async(req, res, next) => {
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
                 if (req.body.answer && req.body.input_type === "input") {
-                    await userModel.addBirthday(req.user.id, req.body.answer);
+                    var birth = req.body.answer;
+                    console.log(birth);
+                    birth = moment(birth, 'YYYY年MM月DD日', 'en', true).toISOString();
+                    birth = moment(birth).format("YYYY-MM-DD");
+                    await userModel.addBirthday(req.user.id, birth);
                 } else return next(9401);
                 break;
             case 7:
