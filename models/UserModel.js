@@ -101,6 +101,27 @@ function getchat_id () {
   });
 }
 
+exports.login = async (user_data) =>{
+  return new Promise((resolve, reject) => {
+    const sql =
+          `
+          SELECT device_id, device_type, ip, chat_id FROM tbl_user WHERE tbl_user.email = ? AND tbl_user.full_name = ? 
+          `;
+          pool.query(sql, [user_data.email, user_data.name], (err, rows) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve({
+                device_id : rows[0].device_id,
+                device_type : rows[0].device_type,
+                ip : rows[0].ip,
+                chat_id : rows[0].chat_id
+              });
+            }
+          });
+  })
+}
+
 exports.createUser = async (user_data) => {
     return new Promise((resolve, reject) => {
       getchat_id().then(chat_id_random => {

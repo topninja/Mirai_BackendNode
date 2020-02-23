@@ -20,3 +20,19 @@ exports.auth = (req, res, next) => {
     });
   }
 };
+
+exports.login = (req, res, next) => {
+  if (!req.headers.mirai_token) {
+    return next(401);
+  } else {
+    authModel.logineduser(req.headers.mirai_token, (err, user_info) => {
+      if (err) {
+        return next(10403);
+      } else {
+        // Success
+        req.user = user_info;
+        return next();
+      }
+    });
+  }
+};

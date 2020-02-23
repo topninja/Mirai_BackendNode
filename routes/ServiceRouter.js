@@ -16,6 +16,9 @@ module.exports = (router) => {
   router.route('/hello')
     .post(validate(ParamValidation.user_hello), UserCtrl.crateUser);
   
+  router.route('/login')
+    .post(validate(ParamValidation.user_login), UserCtrl.login);
+  
   // start chat 1 for first user
   router.route('/startchat1')
    .get(AuthCtrl.auth, validate(ParamValidation.startchat), ChatCtrl.startchat1);
@@ -37,7 +40,7 @@ module.exports = (router) => {
   
     //for logined user
   router.route('/startchat')
-    .get(AuthCtrl.auth, validate(ParamValidation.startchat), ChatCtrl.startchat);
+    .get(AuthCtrl.login, validate(ParamValidation.startchat), ChatCtrl.startchat);
 
   // router.route('/user/sign-up')
   //   .post(validate(ParamValidation.user_sign_up), UserCtrl.signUp);

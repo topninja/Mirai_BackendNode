@@ -49,6 +49,26 @@ exports.crateUser = async (req, res, next) => {
   }  
 };
 
+//make token for first user
+exports.login = async (req, res, next) => {
+  let result = {};
+  
+  try {
+    const user_data = {
+      name: req.body.name,
+      email : req.body.email
+    };
+
+    userModel.login(user_data).then((user_info)=>{
+      result.mirai_token = jwt.sign(user_info, config.jwt.cert, {expiresIn: '10h'});
+      return res.json(result);
+    });
+
+  } catch (error) {
+    return next(error);
+  }  
+};
+
 
 
 // /**

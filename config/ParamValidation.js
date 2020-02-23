@@ -22,6 +22,14 @@ module.exports = {
     }
   },
 
+  //POST - /login
+  user_login: {
+    body: {
+      name: Joi.string().required(),
+      email: Joi.string().required()
+    }
+  },
+
   //GET - /startchat1
   startchat: {
     header:{
