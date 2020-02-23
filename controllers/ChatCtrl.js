@@ -156,7 +156,7 @@ exports.chat = async(req, res, next) => {
                 // horoscope send message answer_id = 0 : Yes, 1 : No
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
-                if (req.body.answer_id && req.body.input_type === "input") {
+                if (req.body.answer_id && req.body.input_type === "option") {
                     if (parseInt(req.body.answer_id) === 0) {
                         // Yes
                         await userModel.addHoroscope(req.user.id);
@@ -191,7 +191,7 @@ exports.chat = async(req, res, next) => {
                 // salon work?  like beauty?
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
-                if (req.body.answer_id && req.body.input_type === "input") {
+                if (req.body.answer_id && req.body.input_type === "option") {
                     if (parseInt(req.body.answer_id) === 0) {
                         // like beauty
                         await userModel.addJob(req.user.id, jobArray[0]);
@@ -203,7 +203,7 @@ exports.chat = async(req, res, next) => {
                 // what's your genre of salon work, as an expert?
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
-                if (req.body.answer_id && req.body.input_type === "input") {
+                if (req.body.answer_id && req.body.input_type === "option") {
                     let job_id = parseInt(req.body.answer_id) + 1;
                     await userModel.addJob(req.user.id, jobArray[job_id]);
                 } else return next(9401);
@@ -212,15 +212,22 @@ exports.chat = async(req, res, next) => {
                 // what's your favorite topic ?
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
-                if (req.body.answer_id && req.body.input_type === "input") {
+                if (req.body.answer_id && req.body.input_type === "option") {
                     let topic_id = parseInt(req.body.answer_id);
-                    await userModel.addFavoriteTopic(req.user.id, topicArray[topic_id]);
+                    await userModel.addFavoriteTopic(req.user.id, topic_id);
                 } else return next(9401);
                 break;
             case 14:
-                result.article_list = [];
+                var article_list = await userModel.getFavoriteTopic(req.user.id);
+                result.article_list = article_list;
+                console.log(result);
                 break;
-        }
+            case 15:
+                var article_list = await userModel.getFavoriteTopic(req.user.id);
+                result.article_list = article_list;
+                console.log(result);
+                break;
+        }   
 
         // if user's step_id < 15 then go to next step
         if (step_id < 15) {

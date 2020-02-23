@@ -341,6 +341,22 @@ exports.addFavoriteTopic = (user_id, topic_name) => {
   });
 }
 
+exports.getFavoriteTopic = (user_id) =>{
+  return new Promise((resolve, reject) => {
+    const sql =
+      `
+      select tbl_articles.* from tbl_articles join tbl_user on tbl_user.favorite_topic = tbl_articles.article_type where tbl_user.id = ? LIMIT 4
+      `;
+    pool.query(sql, user_id, (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+}
+
 
 // /**
 //  * Sign Up
