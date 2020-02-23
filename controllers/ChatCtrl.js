@@ -25,6 +25,10 @@ exports.startchat1 = async(req, res, next) => {
             input_type: step.step_input_type,
             is_backend: 1
         }
+        result.created_date = await chatlogModel.GetLogDateById(insertId);
+        result.created_date = result.created_date.created_at;
+        result.created_date = moment(result.created_date, 'YYYY-MM-DD h:m:s', 'en', true).toISOString();
+        result.created_date = moment(result.created_date).format("YYYY年MM月DD日 hh:mm");
     } catch (err) {
         return next(err)
     }
@@ -45,6 +49,10 @@ exports.startchat2 = async(req, res, next) => {
             input_type: step.step_input_type,
             is_backend: 1
         }
+        result.created_date = await chatlogModel.GetLogDateById(insertId);
+        result.created_date = result.created_date.created_at;
+        result.created_date = moment(result.created_date, 'YYYY-MM-DD h:m:s', 'en', true).toISOString();
+        result.created_date = moment(result.created_date).format("YYYY年MM月DD日 hh:mm");
     } catch (err) {
         return next(err)
     }
@@ -66,6 +74,10 @@ exports.startchat3 = async(req, res, next) => {
             place_holder: step.step_placeholder,
             is_backend: 1
         }
+        result.created_date = await chatlogModel.GetLogDateById(insertId);
+        result.created_date = result.created_date.created_at;
+        result.created_date = moment(result.created_date, 'YYYY-MM-DD h:m:s', 'en', true).toISOString();
+        result.created_date = moment(result.created_date).format("YYYY年MM月DD日 hh:mm");
     } catch (err) {
         return next(err)
     }
@@ -77,9 +89,10 @@ exports.chatlog = async(req, res, next) => {
     let log = await chatlogModel.GetLog(req.user.chat_id);
     for (var i in log) {
         //chat_in_out == 0 then send chat to frontend from backend  if send message by step_id
+        var onelog = {};
         if (log[i].chat_in_out == 0) {
             let step = await chatModel.getStep(log[i].chat_step_id);
-            var onelog = {
+            onelog = {
                 chat_id: log[i].id,
                 is_backend: 1,
                 chat_step_id: log[i].chat_step_id,
@@ -93,17 +106,47 @@ exports.chatlog = async(req, res, next) => {
                     step_article_list: step.step_article_list
                 }
             }
-            result.push(onelog);
         } else {
-            var onelog = {
+            onelog = {
                 chat_id: log[i].id,
                 answer: log[i].answer,
                 answer_id: log[i].answer_id,
                 is_backend: 0,
                 chat_step_id: log[i].chat_step_id
             }
-            result.push(onelog);
         }
+        onelog.created_date = await chatlogModel.GetLogDateById(log[i].id);
+        onelog.created_date = onelog.created_date.created_at;
+        onelog.created_date = moment(onelog.created_date, 'YYYY-MM-DD h:m:s', 'en', true).toISOString();
+        onelog.created_date = moment(onelog.created_date).format("YYYY年MM月DD日 hh:mm");
+        result.push(onelog);
+    }
+    return res.json(result);
+}
+
+exports.startchat = async(req, res, next) => {
+    let result = {}
+    let step_id = req.user.step_id;
+    
+    try {
+        let step = await chatModel.getStep(step_id);
+        
+        let insertId = await chatlogModel.AddLog(req.user.chat_id, null, null, 0, step_id);
+        result.chat_id = insertId;
+        result.is_backend = 1;
+
+        var article_list = await userModel.getFavoriteTopic(req.user.id);
+        if (step.step_text) result.text = step.step_text;
+        if (step.step_input_type) result.input_type = step.step_input_type;
+        result.article_list = article_list;
+        result.created_date = await chatlogModel.GetLogDateById(insertId);
+        result.created_date = result.created_date.created_at;
+        result.created_date = moment(result.created_date, 'YYYY-MM-DD h:m:s', 'en', true).toISOString();
+        result.created_date = moment(result.created_date).format("YYYY年MM月DD日 hh:mm");
+        
+        
+    } catch (err) {
+        return next(err)
     }
     return res.json(result);
 }
@@ -216,16 +259,19 @@ exports.chat = async(req, res, next) => {
                     let topic_id = parseInt(req.body.answer_id);
                     await userModel.addFavoriteTopic(req.user.id, topic_id);
                 } else return next(9401);
+                var article_list = await userModel.getFavoriteTopic(req.user.id);
+                result.article_list = article_list;
+                console.log(result);
                 break;
             case 14:
                 var article_list = await userModel.getFavoriteTopic(req.user.id);
                 result.article_list = article_list;
-                console.log(result);
+                // console.log(result);
                 break;
             case 15:
                 var article_list = await userModel.getFavoriteTopic(req.user.id);
                 result.article_list = article_list;
-                console.log(result);
+                // console.log(result);
                 break;
         }   
 
@@ -246,6 +292,11 @@ exports.chat = async(req, res, next) => {
         if (step.step_placeholder) result.place_holder = step.step_placeholder;
         if (step.step_option_list) result.option_list = step.step_option_list;
         if (step.step_gallery_list) result.gallery_list = step.step_gallery_list;
+
+        result.created_date = await chatlogModel.GetLogDateById(insertId);
+        result.created_date = result.created_date.created_at;
+        result.created_date = moment(result.created_date, 'YYYY-MM-DD h:m:s', 'en', true).toISOString();
+        result.created_date = moment(result.created_date).format("YYYY年MM月DD日 hh:mm");
 
     } catch (error) {
         return next(error);

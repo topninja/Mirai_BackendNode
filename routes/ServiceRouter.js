@@ -33,7 +33,11 @@ module.exports = (router) => {
    .post(AuthCtrl.auth, validate(ParamValidation.startchat), ChatCtrl.chat);
   
   router.route('/chatlog')
-    .get(AuthCtrl.auth, validate(ParamValidation.startchat), ChatCtrl.chatlog)
+    .get(AuthCtrl.auth, validate(ParamValidation.startchat), ChatCtrl.chatlog);
+  
+    //for logined user
+  router.route('/startchat')
+    .get(AuthCtrl.auth, validate(ParamValidation.startchat), ChatCtrl.startchat);
 
   // router.route('/user/sign-up')
   //   .post(validate(ParamValidation.user_sign_up), UserCtrl.signUp);
