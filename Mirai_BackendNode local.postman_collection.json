@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "20d3d18f-c6c8-4147-ba4c-7917c5bff25c",
+		"name": "Mirai_BackendNode local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "chat post - Main  chat flow",
+			"item": [
+				{
+					"name": "FirstName_send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"input\",\n\t\"answer\" : \"Jin\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "LastName_send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjEzb3MiLCJpcCI6IjEzMjEyMzEiLCJjaGF0X2lkIjo0LCJpYXQiOjE1ODM1NjIyNzMsImV4cCI6MTU4MzU5ODI3M30.cbbSIDy_oyE1HAxu9uUe-cWYUhSHf_56tYPte1oLeVU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"input\",\n\t\"answer\" : \"Lyu\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Do you have nick name?  yes post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"option\",\n\t\"answer_id\" : \"0\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "NickName_post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"input\",\n\t\"answer\" : \"iwajaki\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Do you have nick name?  no post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"option\",\n\t\"answer_id\" : \"1\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Birthday_post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"input\",\n\t\"answer\" : \"1994年02月20日\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Daily send Horoscope ? Yes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"option\",\n\t\"answer_id\" : \"0\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Daily send Horoscope ? No",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"option\",\n\t\"answer_id\" : \"1\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Tel_send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"input\",\n\t\"answer\" : \"9012312312323\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Email_send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"input\",\n\t\"answer\" : \"test@gmail.com\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Postalcode_send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"input\",\n\t\"answer\" : \"123123\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Job :  Normal User - Send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"option\",\n\t\"answer_id\" : \"0\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Job :  Salon work - Send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"option\",\n\t\"answer_id\" : \"1\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Job :  Salon work Job Type - Send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"option\",\n\t\"answer_id\" : \"1\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "Favorite Topic id- Send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mirai_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"input_type\" : \"multiple\",\n\t\"answer_id\" : [\"1\", \"2\"]\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": "http://localhost:3000/api/chat"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"111\",\n\t\"email\" : \"1123\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": "http://localhost:3000/api/login"
+			},
+			"response": []
+		},
+		{
+			"name": "chatlog",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "mirai_token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjEzb3MiLCJpcCI6IjEzMjEyMzEiLCJjaGF0X2lkIjo0LCJpYXQiOjE1ODM1NjIyNzMsImV4cCI6MTU4MzU5ODI3M30.cbbSIDy_oyE1HAxu9uUe-cWYUhSHf_56tYPte1oLeVU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"input_type\" : \"multiple\",\n\t\"answer_id\" : [\"1\", \"2\"]\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": "http://localhost:3000/api/chatlog"
+			},
+			"response": []
+		},
+		{
+			"name": "hello",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ip\" : \"1321231\",\n\t\"device_id\" : \"\",\n\t\"device_type\" : \"i123os\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": "http://localhost:3000/api/hello"
+			},
+			"response": []
+		},
+		{
+			"name": "startchat1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "mirai_token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIiLCJkZXZpY2VfdHlwZSI6ImkxMjNvcyIsImlwIjoiMTMyMTIzMSIsImNoYXRfaWQiOjMsImlhdCI6MTU4MzUzNDM5OSwiZXhwIjoxNTgzNTcwMzk5fQ.q0kiRxzPHaPns409mcBvUbRLsLiQxp73xjTofUx6rMw",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/startchat1"
+			},
+			"response": []
+		},
+		{
+			"name": "startchat2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "mirai_token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIxMTExIiwiZGV2aWNlX3R5cGUiOiJpMTIzb3MiLCJpcCI6IjEzMjEyMzEiLCJjaGF0X2lkIjozNDUsImlhdCI6MTU4MjM5NTcyNywiZXhwIjoxNTgyNDMxNzI3fQ.9vfE9rZRfAixHJthxmBtpZv8aLnWaemPW8uFhnIVQso",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/startchat2"
+			},
+			"response": []
+		},
+		{
+			"name": "startchat3",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "mirai_token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VfaWQiOiIxMTExIiwiZGV2aWNlX3R5cGUiOiJpMTIzb3MiLCJpcCI6IjEzMjEyMzEiLCJjaGF0X2lkIjoxNSwiaWF0IjoxNTgyNDg2MDY2LCJleHAiOjE1ODI1MjIwNjZ9.sgcP_ZC5N_NwIKHJWIaY9-sTX5vScrBVG2HBlzKBWks",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/startchat3"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
