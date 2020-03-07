@@ -60,12 +60,13 @@ exports.login = async (req, res, next) => {
     };
 
     userModel.login(user_data).then((user_info)=>{
+      if (user_info == false) return next(401);
       result.mirai_token = jwt.sign(user_info, config.jwt.cert, {expiresIn: '10h'});
       return res.json(result);
     });
 
   } catch (error) {
-    return next(error);
+    return next(401);
   }  
 };
 

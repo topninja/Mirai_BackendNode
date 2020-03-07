@@ -1,6 +1,7 @@
 'use strict';
 
 const pool = require('../config/config').pool;
+const mysql = require('mysql');
 
 /**
  * existingCustomer
@@ -104,21 +105,24 @@ function getchat_id () {
 exports.login = async (user_data) =>{
   return new Promise((resolve, reject) => {
     const sql =
-          `
-          SELECT device_id, device_type, ip, chat_id FROM tbl_user WHERE tbl_user.email = ? AND tbl_user.full_name = ? 
-          `;
-          pool.query(sql, [user_data.email, user_data.name], (err, rows) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve({
-                device_id : rows[0].device_id,
-                device_type : rows[0].device_type,
-                ip : rows[0].ip,
-                chat_id : rows[0].chat_id
-              });
-            }
+      `
+      SELECT device_id, device_type, ip, chat_id FROM tbl_user WHERE tbl_user.email = ? AND tbl_user.full_name = ? 
+      `;
+      pool.query(sql, [user_data.email, user_data.name], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          if (rows.length == 0){
+            resolve(false);
+          }
+          else resolve({
+            device_id : rows[0].device_id != undefined ? rows[0].device_id : "",
+            device_type : rows[0].device_type,
+            ip : rows[0].ip,
+            chat_id : rows[0].chat_id
           });
+        }
+      });
   })
 }
 
@@ -178,13 +182,50 @@ exports.step_id_increase = (user_id, step_id) => {
   });
 }
 
-exports.addName = (user_id, name) => {
+exports.addFirstName = (user_id, name) => {
   return new Promise((resolve, reject) => {
     const sql =
       `
-      UPDATE tbl_user SET full_name = ? WHERE id = ?
+      UPDATE tbl_user SET first_name = ? WHERE id = ?
       `;
     pool.query(sql, [name, user_id], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        if (rows.affectedRows === 1) {
+          resolve(true);
+        }
+      }
+    });
+  });
+}
+
+exports.addLastName = (user_id, name) => {
+  return new Promise((resolve, reject) => {
+    const sql =
+      `
+      UPDATE tbl_user SET last_name = ? WHERE id = ?
+      `;
+    pool.query(sql, [name, user_id], async (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        if (rows.affectedRows === 1) {
+          await updateFullName(user_id);
+          resolve(true);
+        }
+      }
+    });
+  });
+}
+
+const updateFullName = (user_id)=>{
+  return new Promise((resolve, reject) => {
+    const sql =
+      `
+      UPDATE tbl_user SET full_name = CONCAT(first_name,' ',last_name) where id = ?
+      `;
+    pool.query(sql, user_id, async(err, rows) => {
       if (err) {
         reject(err);
       } else {
@@ -362,22 +403,97 @@ exports.addFavoriteTopic = (user_id, topic_name) => {
   });
 }
 
-exports.getFavoriteTopic = (user_id) =>{
+exports.getFavoriteArray = (user_id) => {
   return new Promise((resolve, reject) => {
     const sql =
       `
-      select tbl_articles.* from tbl_articles join tbl_user on tbl_user.favorite_topic = tbl_articles.article_type where tbl_user.id = ? LIMIT 4
+      SELECT favorite_topic FROM tbl_user WHERE id = ?
       `;
     pool.query(sql, user_id, (err, rows) => {
       if (err) {
         reject(err);
       } else {
-        resolve(rows);
+        resolve(rows[0]);
       }
     });
   });
 }
 
+exports.getFavoriteTopic = (topicArray) =>{
+  return new Promise((resolve, reject) => {
+    const pool = mysql.createPool({
+      "host": "localhost",
+      "port": 3306,
+      "user": "root",
+      "password": "",
+      "database": "mirai_wp_db",
+      "connectionLimit": 100
+    });
+    const sql =
+      `
+      SELECT
+      ID as id,
+      post_title as name,
+      post_content as content,
+      wp_terms.name as category,
+      wp_postmeta.meta_value
+      FROM
+      wp_posts
+      LEFT JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id)
+      LEFT JOIN wp_term_taxonomy ON (wp_term_relationships.term_taxonomy_id = wp_term_taxonomy.term_taxonomy_id)
+      LEFT JOIN wp_terms ON (wp_terms.term_id = wp_term_taxonomy.term_id)
+      LEFT JOIN wp_postmeta ON (wp_posts.id = wp_postmeta.post_id)
+      WHERE
+      post_status = 'publish'
+      AND post_type = 'post'
+      AND wp_postmeta.meta_key='_thumbnail_id'
+      AND wp_terms.name in ` + topicArray.favorite_topic
+      ;
+    pool.query(sql, async(err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        try {
+          for (var i in rows){
+            rows[i].thumbnail_url = await getThumbnailbyMetaValue(rows[i].meta_value);
+          }
+          resolve(rows); 
+        } catch (error) {
+          reject(error);
+        }
+      }
+    });
+  });
+}
+
+const getThumbnailbyMetaValue = (meta_value) =>{
+  return new Promise((resolve, reject) => {
+    const pool = mysql.createPool({
+      "host": "localhost",
+      "port": 3306,
+      "user": "root",
+      "password": "",
+      "database": "mirai_wp_db",
+      "connectionLimit": 100
+    });
+    console.log(meta_value);
+    const sql =
+      `
+      SELECT
+      guid
+      FROM
+      wp_posts
+      WHERE
+      ID = ?`;
+    pool.query(sql, meta_value, (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows[0].guid);
+      }
+    });
+  });
+}
 
 // /**
 //  * Sign Up

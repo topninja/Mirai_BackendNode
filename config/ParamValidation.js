@@ -17,7 +17,6 @@ module.exports = {
   user_hello: {
     body: {
       ip: Joi.string().required(),
-      device_id: Joi.string().required(),
       device_type : Joi.string().required()
     }
   },

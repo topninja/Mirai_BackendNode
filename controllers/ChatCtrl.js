@@ -3,7 +3,10 @@
 const chatModel = require('../models/ChatModel.js');
 const userModel = require('../models/UserModel');
 const chatlogModel = require('../models/ChatlogModel');
+const HoroscopeModel = require('../models/HoroscopeModel');
 const moment = require('moment')
+const jsdom = require('jsdom');
+const {JSDOM} = jsdom;
 
 const chatStepCount = 15;
 //美容が好きなだけ : normal user that like beauty
@@ -12,6 +15,7 @@ const jobArray = ['美容が好きなだけ', 'ネイリスト', 'アイリス�
 const topicArray = ['コスメ・最新美容情報', 'ネイル・アイラッシュ', '恋愛', 'スピリチュアル'];
 //chat_log table :  chat_in_out  1: in backend(is_backend : 0),     0; out  to frontend (is_backend:1)
 //step_id = 1
+
 exports.startchat1 = async(req, res, next) => {
     let result = {}
     try {
@@ -92,20 +96,41 @@ exports.chatlog = async(req, res, next) => {
         var onelog = {};
         if (log[i].chat_in_out == 0) {
             let step = await chatModel.getStep(log[i].chat_step_id);
-            onelog = {
+            //if birthday, change the content of horoscope of text
+            if (log[i].chat_step_id == 8){
+                var birth;
+                for (var k in result){
+                    if (result[k].chat_step_id == 7 && result[k].is_backend == 0){
+                        birth = result[k].answer;
+                    }
+                }
+                birth = moment(moment.utc(birth, 'YYYY年MM月DD日', 'en', 'true').format("YYYY-MM-DD"));
+                var horoscope_content = await HoroscopeModel.getHoroscope(birth);
+                step.step_text = step.step_text.replace("(Horoscope)", horoscope_content.name_jp);
+                step.step_text = step.step_text.replace("(Horoscope)", horoscope_content.name_jp);
+                var horo_content = "恋愛運 : " + horoscope_content.love_luck + "\r\n, ";
+                horo_content += "仕事・勉強運 : " + horoscope_content.work_study + "\r\n, "
+                horo_content += "ヘルス&ビューティー運 : " + horoscope_content.healthy_beauty + "\r\n"
+                step.step_text = step.step_text.replace("(horoscope_content)", horo_content);
+                onelog = {
+                    chat_id: log[i].id,
+                    is_backend: 1,
+                    chat_step_id: log[i].chat_step_id,
+                    text: step.step_text
+                }
+            }
+            else onelog = {
                 chat_id: log[i].id,
                 is_backend: 1,
                 chat_step_id: log[i].chat_step_id,
-                step_content: {
-                    step_text: step.step_text,
-                    step_input_type: step.step_input_type,
-                    step_message_type: step.step_message_type,
-                    step_placeholder: step.step_placeholder,
-                    step_option_list: step.step_option_list,
-                    step_gallery_list: step.step_gallery_list,
-                    step_article_list: step.step_article_list
-                }
+                text: step.step_text
             }
+            if (step.step_en) onelog.text_en = step.step_en;
+            if (step.step_input_type) onelog.input_type = step.step_input_type;
+            if (step.step_message_type) onelog.message_type = step.step_message_type;
+            if (step.step_placeholder) onelog.place_holder = step.step_placeholder;
+            if (step.step_option_list) onelog.option_list = step.step_option_list;
+            if (step.step_gallery_list) onelog.gallery_list = step.step_gallery_list;
         } else {
             onelog = {
                 chat_id: log[i].id,
@@ -159,13 +184,20 @@ exports.chat = async(req, res, next) => {
 
         switch (step_id) {
             case 3:
-                // name input
+                // first name input
                 if (req.body.answer && req.body.input_type === "input") {
-                    await userModel.addName(req.user.id, req.body.answer);
+                    await userModel.addFirstName(req.user.id, req.body.answer);
                 } else return next(9401);
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, null, 1, step_id);
                 break;
             case 4:
+                // last name input
+                if (req.body.answer && req.body.input_type === "input") {
+                    await userModel.addLastName(req.user.id, req.body.answer);
+                } else return next(9401);
+                await chatlogModel.AddLog(req.user.chat_id, req.body.answer, null, 1, step_id);
+                break;
+            case 5:
                 // answer_id : 0 Yes,  answer_id : 1 No
                 await chatlogModel.AddLog(req.user.chat_id, null, req.body.answer_id, 1, step_id);
 
@@ -175,7 +207,7 @@ exports.chat = async(req, res, next) => {
                     }
                 } else return next(9401);
                 break;
-            case 5:
+            case 6:
                 // nick name insert
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -183,19 +215,22 @@ exports.chat = async(req, res, next) => {
                     await userModel.addNickName(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 6:
+            case 7:
                 // birthday insert
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
                 if (req.body.answer && req.body.input_type === "input") {
-                    var birth = req.body.answer;
-                    console.log(birth);
-                    birth = moment(birth, 'YYYY年MM月DD日', 'en', true).toISOString();
-                    birth = moment(birth).format("YYYY-MM-DD");
-                    await userModel.addBirthday(req.user.id, birth);
+                    try {
+                        var birth = req.body.answer;
+                        // console.log(birth);
+                        birth = moment(moment.utc(birth, 'YYYY年MM月DD日', 'en', 'true').format("YYYY-MM-DD"));
+                        await userModel.addBirthday(req.user.id, birth);
+                    } catch (error) {
+                        return next(9401);
+                    }
                 } else return next(9401);
                 break;
-            case 7:
+            case 8:
                 // horoscope send message answer_id = 0 : Yes, 1 : No
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -206,7 +241,7 @@ exports.chat = async(req, res, next) => {
                     }
                 } else return next(9401);
                 break;
-            case 8:
+            case 9:
                 // tel number insert
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -214,7 +249,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addTel(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 9:
+            case 10:
                 // email
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -222,7 +257,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addEmail(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 10:
+            case 11:
                 // postal code
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -230,7 +265,7 @@ exports.chat = async(req, res, next) => {
                     await userModel.addPostalCode(req.user.id, req.body.answer);
                 } else return next(9401);
                 break;
-            case 11:
+            case 12:
                 // salon work?  like beauty?
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -242,7 +277,7 @@ exports.chat = async(req, res, next) => {
                     }
                 } else return next(9401);
                 break;
-            case 12:
+            case 13:
                 // what's your genre of salon work, as an expert?
                 await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
 
@@ -251,42 +286,79 @@ exports.chat = async(req, res, next) => {
                     await userModel.addJob(req.user.id, jobArray[job_id]);
                 } else return next(9401);
                 break;
-            case 13:
-                // what's your favorite topic ?
-                await chatlogModel.AddLog(req.user.chat_id, req.body.answer, req.body.answer_id, 1, step_id);
-
-                if (req.body.answer_id && req.body.input_type === "option") {
-                    let topic_id = parseInt(req.body.answer_id);
-                    await userModel.addFavoriteTopic(req.user.id, topic_id);
-                } else return next(9401);
-                var article_list = await userModel.getFavoriteTopic(req.user.id);
-                result.article_list = article_list;
-                console.log(result);
-                break;
             case 14:
-                var article_list = await userModel.getFavoriteTopic(req.user.id);
+                // what's your favorite topic ?
+                var answer_ids_array = JSON.stringify(req.body.answer_id);
+                
+                await chatlogModel.AddLog(req.user.chat_id, req.body.answer, answer_ids_array, 1, step_id);
+                
+                if (answer_ids_array && req.body.input_type === "multiple") {
+                    // console.log(topicArray.length);
+                    for (var i = 0; i < topicArray.length; i++){
+                        answer_ids_array = answer_ids_array.replace(i.toString(), topicArray[i]);
+                    }
+                    answer_ids_array = "(" + answer_ids_array.substr(1, answer_ids_array.length - 2) + ")";
+                    await userModel.addFavoriteTopic(req.user.id, answer_ids_array);
+                } else return next(9401);
+                var userTopicArray = await userModel.getFavoriteArray(req.user.id);
+                var article_list = await userModel.getFavoriteTopic(userTopicArray);
+                for (var i in article_list){
+                    const dom = new JSDOM(article_list[i].content);
+                    const text = dom.window.document.querySelector("p").textContent;
+                    // console.log(text);
+                    article_list[i].summary = text.substr(0, 100) + "...";
+                }
                 result.article_list = article_list;
                 // console.log(result);
                 break;
             case 15:
-                var article_list = await userModel.getFavoriteTopic(req.user.id);
+                var userTopicArray = await userModel.getFavoriteArray(req.user.id);
+                var article_list = await userModel.getFavoriteTopic(userTopicArray);
+                for (var i in article_list){
+                    const dom = new JSDOM(article_list[i].content);
+                    const text = dom.window.document.querySelector("p").textContent;
+                    // console.log(text);
+                    article_list[i].summary = text.substr(0, 100) + "...";
+                }
+                result.article_list = article_list;
+                break;
+            case 16:
+                var userTopicArray = await userModel.getFavoriteArray(req.user.id);
+                var article_list = await userModel.getFavoriteTopic(userTopicArray);
+                for (var i in article_list){
+                    const dom = new JSDOM(article_list[i].content);
+                    const text = dom.window.document.querySelector("p").textContent;
+                    // console.log(text);
+                    article_list[i].summary = text.substr(0, 100) + "...";
+                }
                 result.article_list = article_list;
                 // console.log(result);
                 break;
         }   
 
         // if user's step_id < 15 then go to next step
-        if (step_id < 15) {
+        if (step_id < 16) {
             step_id = await userModel.step_id_increase(req.user.id, step_id);
         }
         let step = await chatModel.getStep(step_id);
 
         // add user's chat log
         // horoscope process handler as birthday  step : 6
-        let insertId = await chatlogModel.AddLog(req.user.chat_id, null, null, 0, step_id - 1);
+        let insertId = await chatlogModel.AddLog(req.user.chat_id, null, null, 0, step_id);
         result.chat_id = insertId;
         result.is_backend = 1;
         if (step.step_text) result.text = step.step_text;
+        if (step_id == 8){
+            var birth = moment(moment.utc(req.body.answer, 'YYYY年MM月DD日', 'en', 'true').format("YYYY-MM-DD"));
+            var horoscope_content = await HoroscopeModel.getHoroscope(birth);
+            result.text = result.text.replace("(Horoscope)", horoscope_content.name_jp);
+            result.text = result.text.replace("(Horoscope)", horoscope_content.name_jp);
+            var horo_content = "恋愛運 : " + horoscope_content.love_luck + "\r\n, ";
+            horo_content += "仕事・勉強運 : " + horoscope_content.work_study + "\r\n, "
+            horo_content += "ヘルス&ビューティー運 : " + horoscope_content.healthy_beauty + "\r\n"
+            result.text = result.text.replace("(horoscope_content)", horo_content);
+        }
+        if (step.step_en) result.text_en = step.step_en;
         if (step.step_input_type) result.input_type = step.step_input_type;
         if (step.step_message_type) result.message_type = step.step_message_type;
         if (step.step_placeholder) result.place_holder = step.step_placeholder;
