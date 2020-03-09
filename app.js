@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const horoscope = require('./lib/horoscopeScrapping');
+const pushNotification = require('./lib/pushNotification');
 const cron = require('node-cron');
 var session = require('express-session');
 
@@ -47,8 +48,8 @@ cron.schedule("* 5 * * *", () => {
   horoscope.doScrape();
 })
 // send horoscope notification data 8:00 AM every day
-cron.schedule("* 8 * * *", () => {
-  horoscope.doScrape();
+cron.schedule("*/20 * * * * *", () => {
+  pushNotification.sendPushMessage();
 })
 // Server Port Set
 const PORT = 3000;

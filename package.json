@@ -27,6 +27,7 @@
     "express": "~4.17.1",
     "express-session": "^1.17.0",
     "express-validation": "^1.0.3",
+    "firebase-admin": "^8.9.2",
     "https": "^1.0.0",
     "joi": "^14.3.1",
     "jsdom": "^16.2.0",

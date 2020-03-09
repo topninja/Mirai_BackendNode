@@ -495,6 +495,25 @@ const getThumbnailbyMetaValue = (meta_value) =>{
   });
 }
 
+exports.getFirebaseIDs = () => {
+  return new Promise((resolve, reject) => {
+    const sql =
+          `
+            select birth, device_id from tbl_user where device_id is not NULL AND daily_horoscope = 1
+          `;
+    const pool = require('../config/config').pool;
+    
+    pool.query(sql, async (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve (rows);
+      }
+    });
+  });
+}
+
+
 // /**
 //  * Sign Up
 //  * @param: user_data = { user_id, password }
